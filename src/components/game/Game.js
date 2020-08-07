@@ -1,5 +1,6 @@
 import React from "react";
 import Team from "../team/Team";
+import ScoreBoard from "../scoreboard/ScoreBoard";
 import Rollingshots from "../Sounds/shots.mp3";
 import Countingshots from "../Sounds/score.mp3";
 
@@ -39,9 +40,28 @@ class Game extends React.Component {
     }));
   };
 
+  resetGame = () => {
+    this.setState((state, props) => ({
+      resetCount: state.resetCount + 1,
+      homeTeamStats: {
+        shots: 0,
+        score: 0,
+      },
+      visitingTeamStats: {
+        shots: 0,
+        score: 0,
+      },
+    }));
+  };
+
   render() {
     return (
       <div className="Game">
+        <ScoreBoard
+          visitingTeamStats={this.state.visitingTeamStats}
+          homeTeamStats={this.state.homeTeamStats}
+        />
+
         <h1>Welcome To {this.props.venue}</h1>
         <div className="stats">
           <Team
@@ -53,6 +73,10 @@ class Game extends React.Component {
 
           <div className="versus">
             <h1>VS</h1>
+            <div>
+              <strong>Resets:</strong> {this.state.resetCount}
+              <button onClick={this.resetGame}>Reset Game</button>
+            </div>
           </div>
           <Team
             name={this.props.homeTeam.name}
